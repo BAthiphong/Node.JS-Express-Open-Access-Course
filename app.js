@@ -5,18 +5,24 @@ const morgan = require('morgan');
 const path = require('path');
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT;
+const productsRouter = require('./src/router/products.Router.js');
 
 app.use(morgan('combined'));
 app.use(express.static(path.join(__dirname, "/public/")));
 
-app.get("/", (req,res) => {
+app.set('views', './src/views');
+app.set("view engine", "ejs");
 
-  res.send('Hellow Fans');
+app.use('/products', productsRouter);
+
+app.get("/", (req, res) => {
+
+  res.render('index', { username: 'Athiphong', customers: ['Peerathank', 'Namucha', 'The Flash'] });
 
 })
 
-app.listen(port, ()=>{
-  console.log('Listening on port ' + chalk.green(port));
-  debug('Listening on port' + chalk.green(port));
+app.listen(PORT, () => {
+  console.log('Listening on PORT ' + chalk.green(PORT));
+  debug('Listening on PORT' + chalk.green(PORT));
 })
